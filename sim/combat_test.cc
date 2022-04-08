@@ -3,9 +3,6 @@
 
 namespace sts::sim {
 
-  TEST(CombatTest, CanMakeEmptyCombatState) {
-    EXPECT_TRUE(true);
+TEST(CombatTest, CanMakeEmptyCombatState) { EXPECT_TRUE(true); }
 
-  }
-
-}
+}  // namespace sts::sim

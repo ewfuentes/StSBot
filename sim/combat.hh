@@ -1,5 +1,4 @@
 
 namespace sts::sim {
-  struct CombatState {
-  };
-}
+struct CombatState {};
+}  // namespace sts::sim
