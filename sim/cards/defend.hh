@@ -1,13 +1,17 @@
 
+#include "sim/cards/get_unique_id.hh"
 #include "sim/combat.hh"
 
 namespace sts::sim::cards {
 struct Block : public Card {
-  Block(int cost, int block_amount)
-      : Card{.name = "Block", .cost = cost, .id = 0, .type = Type::SKILL},
-        block_amount(block_amount) {}
-
   int block_amount;
+
+  Block(int cost, int block_amount)
+      : Card{.name = "Defend",
+             .cost = cost,
+             .id = get_unique_id(),
+             .type = Type::SKILL},
+        block_amount(block_amount) {}
 
   std::vector<Action> create_actions(const CombatState &combat_state) {
     if (combat_state.player.current_energy < cost) {
@@ -19,7 +23,7 @@ struct Block : public Card {
                                  std::to_string(block_amount) +
                                  "(Cost: " + std::to_string(cost) + ")",
                    .apply = [this](const CombatState &state) -> CombatState {
-                     CombatState out = state; // Apply player effects
+                     CombatState out = state;  // Apply player effects
                      out.player.current_block += block_amount;
                      out.player.current_energy -= cost;
                      // Apply monster effects

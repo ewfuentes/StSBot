@@ -1,15 +1,24 @@
 
 cc_library(
-  name = "block",
-  hdrs = ["block.hh"],
-  deps = ["//sim:combat",],
+  name = "get_unique_id",
+  hdrs = ["get_unique_id.hh"],
+  srcs = ["get_unique_id.cc"],
+)
+
+cc_library(
+  name = "defend",
+  hdrs = ["defend.hh"],
+  deps = [
+  "//sim:combat",
+  ":get_unique_id",
+  ],
 )
 
 cc_test(
-  name = "block_test",
-  srcs = ["block_test.cc"],
+  name = "defend_test",
+  srcs = ["defend_test.cc"],
   deps = [
-    ":block",
+    ":defend",
     "@com_google_googletest//:gtest_main",
   ],
 )

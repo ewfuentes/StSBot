@@ -1,7 +1,7 @@
 
 #include "gtest/gtest.h"
 
-#include "sim/cards/block.hh"
+#include "sim/cards/defend.hh"
 
 namespace sts::sim::cards {
 TEST(BlockTest, HappyCase) {
