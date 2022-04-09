@@ -69,7 +69,7 @@ def _impl(ctx):
               actions = all_compile_actions,
               flag_groups = [
                 flag_group(
-                  flags=["-std=c++17", "-Wall", "-Wextra", "-Wpedantic", "-Werror"]
+                  flags=["-std=c++20", "-Wall", "-Wextra", "-Wpedantic", "-Werror"]
                 )
               ]
             )
