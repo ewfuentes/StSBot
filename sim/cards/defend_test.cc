@@ -4,7 +4,7 @@
 #include "sim/cards/defend.hh"
 
 namespace sts::sim::cards {
-TEST(BlockTest, HappyCase) {
+TEST(DefendTest, HappyCase) {
   // SETUP
   // Create Block Card
   constexpr int ENERGY_COST = 2;
@@ -36,7 +36,7 @@ TEST(BlockTest, HappyCase) {
   EXPECT_EQ(new_combat_state.deck.discard.size(), 1);
 }
 
-TEST(BlockTest, NotEnoughEnergyProducesNoActions) {
+TEST(DefendTest, NotEnoughEnergyProducesNoActions) {
   // SETUP
   // Create Block Card
   constexpr int ENERGY_COST = 2;

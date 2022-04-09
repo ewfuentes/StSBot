@@ -22,3 +22,21 @@ cc_test(
     "@com_google_googletest//:gtest_main",
   ],
 )
+
+cc_library(
+  name = "strike",
+  hdrs = ["strike.hh"],
+  deps = [
+    "//sim:combat",
+    ":get_unique_id",
+  ],
+)
+
+cc_test(
+  name = "strike_test",
+  srcs = ["strike_test.cc"],
+  deps = [
+    ":strike",
+    "@com_google_googletest//:gtest_main",
+  ],
+)

@@ -9,9 +9,8 @@ namespace sts::sim {
 struct CombatState;
 
 struct Action {
-
   std::string descriptor;
-  std::function<CombatState(const CombatState&)> apply;
+  std::function<CombatState(const CombatState &)> apply;
 };
 
 struct PlayerState {
@@ -22,7 +21,7 @@ struct PlayerState {
 };
 
 struct MonsterState {
-  int name;
+  std::string name;
   int max_hp;
   int current_hp;
   int current_block;
@@ -34,10 +33,15 @@ struct Card {
   int cost;
   int id;
   Type type;
-  std::vector<Action> create_actions(const CombatState &);
-  bool operator<(const Card &other) const {
-    return id < other.id;
-  }
+
+  Card(std::string name, int cost, int id, Type type)
+      : name(std::move(name)), cost(cost), id(id), type(type) {}
+  Card(const Card &other) = default;
+  virtual std::vector<Action> create_actions(const CombatState &) {
+    return {};
+  };
+  virtual ~Card() {}
+  bool operator<(const Card &other) const { return id < other.id; }
 };
 
 struct DeckState {
