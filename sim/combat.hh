@@ -7,6 +7,7 @@
 namespace sts::sim {
 
 struct CombatState;
+enum class CardLocation { HAND, DRAW, DISCARD, EXHAUST };
 
 struct Action {
   std::string descriptor;
