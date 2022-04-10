@@ -66,7 +66,7 @@ TEST(BuildGameTreeTest, SingleDefendAction) {
   const GameTree game_tree = build_game_tree(initial_state);
 
   // Verification
-  EXPECT_EQ(game_tree.successors.size(), 1);
+  EXPECT_EQ(game_tree.successors.size(), 2);
   enumerate_paths(game_tree);
 }
 
@@ -79,7 +79,7 @@ TEST(BuildGameTreeTest, SingleStrikeAction) {
   const GameTree game_tree = build_game_tree(initial_state);
 
   // Verification
-  EXPECT_EQ(game_tree.successors.size(), 2);
+  EXPECT_EQ(game_tree.successors.size(), 3);
   enumerate_paths(game_tree);
 }
 
@@ -98,7 +98,7 @@ TEST(BuildGameTreeTest, StrikeAndDefendAction) {
   //  - defend and strike one of two creatures
   // Note that there are only two unique leaves, but we don't currently do any
   // deduplication of state yet.
-  EXPECT_EQ(count_leaves(game_tree), 4);
+  EXPECT_EQ(count_leaves(game_tree), 8);
   enumerate_paths(game_tree);
 }
 }  // namespace sts::planning
