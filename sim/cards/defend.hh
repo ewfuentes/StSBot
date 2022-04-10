@@ -3,6 +3,7 @@
 
 #include "sim/cards/get_unique_id.hh"
 #include "sim/combat.hh"
+#include "sim/combat_updater.hh"
 
 namespace sts::sim::cards {
 struct Block : public Card {
@@ -22,16 +23,11 @@ struct Block : public Card {
                                  std::to_string(block_amount) +
                                  "(Cost: " + std::to_string(cost) + ")",
                    .apply = [this](const CombatState &state) -> CombatState {
-                     CombatState out = state;
-                     // Apply player effects
-                     out.player.current_block += block_amount;
-                     out.player.current_energy -= cost;
-                     // Apply monster effects
-                     // Apply power effects
-                     // Apply relic effects
-                     // Move to relevant pile
-                     out.deck.discard.insert(out.deck.hand.extract(*this));
-                     return out;
+                     return CombatUpdater(state)
+                         .apply_player_block(block_amount)
+                         .adjust_energy(-cost)
+                         .move_card_from_to(CardLocation::HAND,
+                                            CardLocation::DISCARD, *this);
                    }});
     return out;
   }

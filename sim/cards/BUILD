@@ -10,6 +10,7 @@ cc_library(
   hdrs = ["defend.hh"],
   deps = [
   "//sim:combat",
+  "//sim:combat_updater",
   ":get_unique_id",
   ],
 )
@@ -28,6 +29,7 @@ cc_library(
   hdrs = ["strike.hh"],
   deps = [
     "//sim:combat",
+    "//sim:combat_updater",
     ":get_unique_id",
   ],
 )
@@ -46,6 +48,7 @@ cc_library(
   hdrs = ["bash.hh"],
   deps = [
     "//sim:combat",
+    "//sim:combat_updater",
     ":get_unique_id",
   ],
 )

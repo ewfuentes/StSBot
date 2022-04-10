@@ -3,6 +3,7 @@
 
 #include "sim/cards/get_unique_id.hh"
 #include "sim/combat.hh"
+#include "sim/combat_updater.hh"
 
 namespace sts::sim::cards {
 struct Strike : public Card {
@@ -18,28 +19,18 @@ struct Strike : public Card {
     }
 
     std::vector<Action> out;
-    for (size_t i = 0; i < combat_state.monsters.size(); i++) {
-      const auto &m = combat_state.monsters.at(i);
+    for (size_t monster_idx = 0; monster_idx < combat_state.monsters.size(); monster_idx++) {
+      const auto &m = combat_state.monsters.at(monster_idx);
       out.push_back(
           {.descriptor = "Attack " + m.name + " for " +
                          std::to_string(damage_amount) +
                          " (Cost: " + std::to_string(cost) + ")",
-           .apply = [this, i](const CombatState &state) -> CombatState {
-             CombatState out = state;
-             // Apply player effects
-             out.player.current_energy -= cost;
-             // Apply monster effects
-             const int excess_damage =
-                 std::max(damage_amount - out.monsters.at(i).current_block, 0);
-             out.monsters.at(i).current_block =
-                 std::max(out.monsters.at(i).current_block - damage_amount, 0);
-             out.monsters.at(i).current_hp -=
-                 std::min(excess_damage, out.monsters.at(i).current_hp);
-             // Apply power effects
-             // Apply relic effects
-             // Move to relevant pile
-             out.deck.discard.insert(out.deck.hand.extract(*this));
-             return out;
+           .apply = [this, monster_idx](const CombatState &state) -> CombatState {
+             return CombatUpdater(state)
+                 .adjust_energy(-cost)
+                 .damage_monster(damage_amount, monster_idx)
+                 .move_card_from_to(CardLocation::HAND, CardLocation::DISCARD,
+                                    *this);
            }});
     }
     return out;
