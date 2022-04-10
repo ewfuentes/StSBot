@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "sim/cards/strike.hh"
 
 namespace sts::sim::cards {

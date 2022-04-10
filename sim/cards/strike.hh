@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "sim/cards/get_unique_id.hh"
 #include "sim/combat.hh"
 
