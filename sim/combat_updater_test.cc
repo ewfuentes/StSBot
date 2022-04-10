@@ -90,10 +90,10 @@ TEST(CombatUpdaterTest, ApplyPlayerBlock) {
 
 TEST(CombatUpdaterTest, MoveCards) {
   // Setup
-  const Card card_1("DummyAttack", 0, 10, Card::Type::ATTACK);
-  const Card card_2("DummySkill", 0, 11, Card::Type::SKILL);
-  const Card card_3("DummyPower", 0, 12, Card::Type::POWER);
-  const Card card_4("DummyCurse", 0, 13, Card::Type::CURSE);
+  const std::shared_ptr<Card> card_1 = std::make_shared<Card>("DummyAttack", 0, 10, Card::Type::ATTACK);
+  const std::shared_ptr<Card> card_2 = std::make_shared<Card>("DummySkill", 0, 11, Card::Type::SKILL);
+  const std::shared_ptr<Card> card_3 = std::make_shared<Card>("DummyPower", 0, 12, Card::Type::POWER);
+  const std::shared_ptr<Card> card_4 = std::make_shared<Card>("DummyCurse", 0, 13, Card::Type::CURSE);
   CombatState state = create_dummy_combat_state();
   state.deck.draw.insert(card_1);
   state.deck.hand.insert(card_2);
@@ -102,11 +102,11 @@ TEST(CombatUpdaterTest, MoveCards) {
   CombatUpdater updater(state);
 
   // Action
-  updater.move_card_from_to(CardLocation::DRAW, CardLocation::HAND, card_1)
-      .move_card_from_to(CardLocation::HAND, CardLocation::DISCARD, card_2)
-      .move_card_from_to(CardLocation::EXHAUST, CardLocation::DRAW, card_3)
+  updater.move_card_from_to(CardLocation::DRAW, CardLocation::HAND, *card_1)
+      .move_card_from_to(CardLocation::HAND, CardLocation::DISCARD, *card_2)
+    .move_card_from_to(CardLocation::EXHAUST, CardLocation::DRAW, *card_3)
       // Note that this one is invalid
-      .move_card_from_to(CardLocation::HAND, CardLocation::DRAW, card_4);
+      .move_card_from_to(CardLocation::HAND, CardLocation::DRAW, *card_4);
   const CombatState new_state = updater;
 
   // Verification

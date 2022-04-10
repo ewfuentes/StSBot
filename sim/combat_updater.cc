@@ -25,7 +25,8 @@ CombatUpdater &CombatUpdater::move_card_from_to(const CardLocation src,
                                                 const CardLocation dst,
                                                 const Card &card) {
   auto location_from_enum =
-      [&deck = state_.deck](const auto loc) -> std::set<Card> & {
+      [&deck = state_.deck](
+          const auto loc) -> std::set<std::shared_ptr<const Card>> & {
     if (loc == CardLocation::HAND) {
       return deck.hand;
     } else if (loc == CardLocation::DISCARD) {
@@ -39,7 +40,7 @@ CombatUpdater &CombatUpdater::move_card_from_to(const CardLocation src,
 
   auto &src_set = location_from_enum(src);
   auto &dst_set = location_from_enum(dst);
-  dst_set.insert(src_set.extract(card));
+  dst_set.insert(src_set.extract(card.shared_from_this()));
   return *this;
 }
 }  // namespace sts::sim

@@ -10,7 +10,7 @@ TEST(StrikeTest, MultipleMonstersProduceMultipleActions) {
   constexpr int ENERGY_COST = 2;
   constexpr int DAMAGE_AMOUNT = 3;
 
-  Strike strike_card(ENERGY_COST, DAMAGE_AMOUNT);
+  std::shared_ptr<Strike> strike_card = std::make_shared<Strike>(ENERGY_COST, DAMAGE_AMOUNT);
 
   // Create CombatState
   const CombatState combat_state{
@@ -33,10 +33,10 @@ TEST(StrikeTest, MultipleMonstersProduceMultipleActions) {
                .current_block = 0},
           },
       .deck = {
-          .hand = {strike_card}, .discard = {}, .draw = {}, .exhaust = {}}};
+               .hand = {strike_card}, .discard = {}, .draw = {}, .exhaust = {}}};
 
   // ACTION + VERIFICATION
-  std::vector<Action> actions = strike_card.create_actions(combat_state);
+  std::vector<Action> actions = strike_card->create_actions(combat_state);
   ASSERT_EQ(actions.size(), 2);
 
   for (size_t i = 0; i < actions.size(); i++) {
@@ -58,7 +58,7 @@ TEST(StrikeTest, BlockHandledAppropriately) {
   constexpr int ENERGY_COST = 2;
   constexpr int DAMAGE_AMOUNT = 15;
 
-  Strike strike_card(ENERGY_COST, DAMAGE_AMOUNT);
+  std::shared_ptr<Strike> strike_card = std::make_shared<Strike>(ENERGY_COST, DAMAGE_AMOUNT);
 
   // Create CombatState
   const CombatState combat_state{
@@ -88,7 +88,7 @@ TEST(StrikeTest, BlockHandledAppropriately) {
           .hand = {strike_card}, .discard = {}, .draw = {}, .exhaust = {}}};
 
   // ACTION + VERIFICATION
-  std::vector<Action> actions = strike_card.create_actions(combat_state);
+  std::vector<Action> actions = strike_card->create_actions(combat_state);
   ASSERT_EQ(actions.size(), 3);
 
   const std::array<std::tuple<int, int>, 3> expected_monster_hp_and_block{
@@ -113,7 +113,7 @@ TEST(StrikeTest, NotEnoughEnergyProducesNoActions) {
   constexpr int ENERGY_COST = 2;
   constexpr int DAMAGE_AMOUNT = 3;
 
-  Strike strike_card(ENERGY_COST, DAMAGE_AMOUNT);
+  std::shared_ptr<Strike> strike_card = std::make_shared<Strike>(ENERGY_COST, DAMAGE_AMOUNT);
 
   // Create CombatState
   const CombatState combat_state{
@@ -139,7 +139,7 @@ TEST(StrikeTest, NotEnoughEnergyProducesNoActions) {
           .hand = {strike_card}, .discard = {}, .draw = {}, .exhaust = {}}};
 
   // ACTION + VERIFICATION
-  std::vector<Action> actions = strike_card.create_actions(combat_state);
+  std::vector<Action> actions = strike_card->create_actions(combat_state);
   ASSERT_TRUE(actions.empty());
 }
 }  // namespace sts::sim::cards

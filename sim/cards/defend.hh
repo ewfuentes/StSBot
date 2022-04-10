@@ -6,14 +6,14 @@
 #include "sim/combat_updater.hh"
 
 namespace sts::sim::cards {
-struct Block : public Card {
+struct Defend : public Card {
   int block_amount;
 
-  Block(int cost, int block_amount)
+  Defend(int cost, int block_amount)
       : Card("Defend", cost, get_unique_id(), Type::SKILL),
         block_amount(block_amount) {}
 
-  std::vector<Action> create_actions(const CombatState &combat_state) override {
+  std::vector<Action> create_actions(const CombatState &combat_state) const override {
     if (combat_state.player.current_energy < cost) {
       return {};
     }

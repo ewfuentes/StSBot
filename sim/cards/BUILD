@@ -1,4 +1,6 @@
 
+package(default_visibility=["//planning:__subpackages__"])
+
 cc_library(
   name = "get_unique_id",
   hdrs = ["get_unique_id.hh"],

@@ -10,7 +10,7 @@ struct Bash : public Card {
       : Card("Bash", energy_cost, get_unique_id(), Type::ATTACK),
         damage_amount(damage_amount) {}
 
-  std::vector<Action> create_actions(const CombatState &combat_state) override {
+  std::vector<Action> create_actions(const CombatState &combat_state) const override {
     if (combat_state.player.current_energy < cost) {
       return {};
     }

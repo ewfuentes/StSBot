@@ -2,6 +2,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <set>
 #include <string>
 #include <vector>
@@ -30,7 +31,7 @@ struct MonsterState {
   int current_block;
 };
 
-struct Card {
+  struct Card : public std::enable_shared_from_this<Card> {
   enum class Type { ATTACK, SKILL, POWER, CURSE };
   std::string name;
   int cost;
@@ -40,7 +41,7 @@ struct Card {
   Card(std::string name, int cost, int id, Type type)
       : name(std::move(name)), cost(cost), id(id), type(type) {}
   Card(const Card &other) = default;
-  virtual std::vector<Action> create_actions(const CombatState &) {
+  virtual std::vector<Action> create_actions(const CombatState &) const {
     return {};
   };
   virtual ~Card() {}
@@ -48,10 +49,10 @@ struct Card {
 };
 
 struct DeckState {
-  std::set<Card> hand;
-  std::set<Card> discard;
-  std::set<Card> draw;
-  std::set<Card> exhaust;
+  std::set<std::shared_ptr<const Card>> hand;
+  std::set<std::shared_ptr<const Card>> discard;
+  std::set<std::shared_ptr<const Card>> draw;
+  std::set<std::shared_ptr<const Card>> exhaust;
 };
 
 struct CombatState {
