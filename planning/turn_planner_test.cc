@@ -38,22 +38,23 @@ int count_leaves(const GameTree &tree) {
   return num_leaves;
 }
 
-  void enumerate_paths(const GameTree &tree, std::vector<std::string> &&actions = {}) {
-    if (tree.successors.empty()) {
-      // Leaf node, print out action list
-      std::cout << "{" << std::endl;
-      for (const auto &action : actions) {
-        std::cout << "\t" << action << std::endl;
-      }
-      std::cout << "}" << std::endl;
-      return;
+void enumerate_paths(const GameTree &tree,
+                     std::vector<std::string> &&actions = {}) {
+  if (tree.successors.empty()) {
+    // Leaf node, print out action list
+    std::cout << "{" << std::endl;
+    for (const auto &action : actions) {
+      std::cout << "\t" << action << std::endl;
     }
+    std::cout << "}" << std::endl;
+    return;
+  }
 
-    for (const auto &child : tree.successors) {
-      actions.push_back(child.first.descriptor);
-      enumerate_paths(child.second, std::move(actions));
-      actions.pop_back();
-    }
+  for (const auto &child : tree.successors) {
+    actions.push_back(child.first.descriptor);
+    enumerate_paths(child.second, std::move(actions));
+    actions.pop_back();
+  }
 }
 
 }  // namespace
@@ -100,5 +101,21 @@ TEST(BuildGameTreeTest, StrikeAndDefendAction) {
   // deduplication of state yet.
   EXPECT_EQ(count_leaves(game_tree), 8);
   enumerate_paths(game_tree);
+}
+
+TEST(BuildGameTreeTest, SingleTurn) {
+  // Setup
+  sim::CombatState initial_state = create_initial_state();
+  initial_state.deck.hand.insert(std::make_shared<sim::cards::Strike>(1, 5));
+  initial_state.deck.hand.insert(std::make_shared<sim::cards::Strike>(1, 5));
+  initial_state.deck.hand.insert(std::make_shared<sim::cards::Defend>(1, 5));
+  initial_state.deck.hand.insert(std::make_shared<sim::cards::Defend>(1, 5));
+  initial_state.deck.hand.insert(std::make_shared<sim::cards::Defend>(1, 5));
+
+  // Action
+  const GameTree game_tree = build_game_tree(initial_state);
+
+  // Verification
+  EXPECT_EQ(count_leaves(game_tree), 196);
 }
 }  // namespace sts::planning

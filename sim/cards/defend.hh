@@ -19,9 +19,9 @@ struct Defend : public Card {
     }
 
     std::vector<Action> out;
-    out.push_back({.descriptor = "Apply " + name + " for " +
+    out.push_back({.descriptor = name + "(" + std::to_string(id) + ") for " +
                                  std::to_string(block_amount) +
-                                 "(Cost: " + std::to_string(cost) + ")",
+                                 " (Cost: " + std::to_string(cost) + ")",
                    .apply = [this](const CombatState &state) -> CombatState {
                      return CombatUpdater(state)
                          .apply_player_block(block_amount)
