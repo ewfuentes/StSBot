@@ -18,3 +18,17 @@ cc_test(
     "@com_google_googletest//:gtest_main",
   ]
 )
+
+cc_library(
+  name = "generate_combat_command",
+  hdrs = ["generate_combat_command.hh"],
+  srcs = ["generate_combat_command.cc"],
+  visibility = ["//interface:__subpackages__"],
+  deps = [
+    ":turn_planner",
+    "//interface:game_state",
+    "//sim/cards:bash",
+    "//sim/cards:defend",
+    "//sim/cards:strike",
+  ]
+)

@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include "planning/generate_combat_command.hh"
+
 namespace sts::interface {
 namespace {
 std::string generate_not_in_game_command(const GameState &game_state) {
@@ -153,31 +155,34 @@ std::string generate_map_command(const MapScreenState &screen) {
 }
 
 std::string generate_combat_command(const CombatState &combat_state) {
-  // Play the first card, if it requires a target, target the first monster
-  if (combat_state.hand.empty()) {
-    return "end";
-  }
-  if (std::all_of(combat_state.hand.begin(), combat_state.hand.end(), [&](const auto &card) {
-        return combat_state.player.energy < card.cost || !card.is_playable;
-      })) {
-    // Not enough energy, end the turn;
-    return "end";
-  }
 
-  const auto first_card_iter =
-      std::find_if(combat_state.hand.begin(), combat_state.hand.end(), [&](const auto &card) {
-        return card.cost <= combat_state.player.energy && card.is_playable;
-      });
-  const int first_card_idx = std::distance(combat_state.hand.begin(), first_card_iter) + 1;
-  const auto first_target_iter =
-      std::find_if(combat_state.monsters.begin(), combat_state.monsters.end(),
-                   [](const auto &monster) { return !monster.is_gone; });
-  const int target_idx = std::distance(combat_state.monsters.begin(), first_target_iter);
-  if (first_card_iter->has_target) {
-    return "play " + std::to_string(first_card_idx) + " " + std::to_string(target_idx);
-  } else {
-    return "play " + std::to_string(first_card_idx);
-  }
+  return planning::generate_combat_command(combat_state);
+
+  // // Play the first card, if it requires a target, target the first monster
+  //  if (combat_state.hand.empty()) {
+  //    return "end";
+  //  }
+  //  if (std::all_of(combat_state.hand.begin(), combat_state.hand.end(), [&](const auto &card) {
+  //        return combat_state.player.energy < card.cost || !card.is_playable;
+  //      })) {
+  //    // Not enough energy, end the turn;
+  //    return "end";
+  //  }
+  //
+  //  const auto first_card_iter =
+  //      std::find_if(combat_state.hand.begin(), combat_state.hand.end(), [&](const auto &card) {
+  //        return card.cost <= combat_state.player.energy && card.is_playable;
+  //      });
+  //  const int first_card_idx = std::distance(combat_state.hand.begin(), first_card_iter) + 1;
+  //  const auto first_target_iter =
+  //      std::find_if(combat_state.monsters.begin(), combat_state.monsters.end(),
+  //                   [](const auto &monster) { return !monster.is_gone; });
+  //  const int target_idx = std::distance(combat_state.monsters.begin(), first_target_iter);
+  //  if (first_card_iter->has_target) {
+  //    return "play " + std::to_string(first_card_idx) + " " + std::to_string(target_idx);
+  //  } else {
+  //    return "play " + std::to_string(first_card_idx);
+  //  }
 }
 template <class... Ts>
 struct overloaded : Ts... {

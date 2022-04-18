@@ -157,6 +157,7 @@ CombatState parse_combat_state(const nlohmann::json &json) {
         monsters_json.begin(), monsters_json.end(), std::back_inserter(out), [&](const auto &item) {
           return CombatState::Monster{.id = item.at("id"),
                                       .block = item.at("block"),
+                                      .current_hp = item.at("current_hp"),
                                       .half_dead = item.at("half_dead"),
                                       .intent = item.at("intent"),
                                       .is_gone = item.at("is_gone"),

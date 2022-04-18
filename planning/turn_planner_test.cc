@@ -11,19 +11,11 @@
 namespace sts::planning {
 namespace {
 sim::CombatState create_initial_state() {
-  return sim::CombatState{.player = {.max_hp = 80,
-                                     .current_hp = 55,
-                                     .current_block = 0,
-                                     .current_energy = 3},
-                          .monsters = {{.name = "monster_a",
-                                        .max_hp = 32,
-                                        .current_hp = 32,
-                                        .current_block = 0},
-                                       {.name = "monster_b",
-                                        .max_hp = 12,
-                                        .current_hp = 12,
-                                        .current_block = 0}},
-                          .deck = {}};
+  return sim::CombatState{
+      .player = {.max_hp = 80, .current_hp = 55, .current_block = 0, .current_energy = 3},
+      .monsters = {{.name = "monster_a", .max_hp = 32, .current_hp = 32, .current_block = 0},
+                   {.name = "monster_b", .max_hp = 12, .current_hp = 12, .current_block = 0}},
+      .deck = {}};
 }
 
 int count_leaves(const GameTree &tree) {
@@ -38,8 +30,7 @@ int count_leaves(const GameTree &tree) {
   return num_leaves;
 }
 
-void enumerate_paths(const GameTree &tree,
-                     std::vector<std::string> &&actions = {}) {
+void enumerate_paths(const GameTree &tree, std::vector<std::string> &&actions = {}) {
   if (tree.successors.empty()) {
     // Leaf node, print out action list
     std::cout << "{" << std::endl;
@@ -58,6 +49,22 @@ void enumerate_paths(const GameTree &tree,
 }
 
 }  // namespace
+
+TEST(ScoreStateTest, SingleMonsterDamage) {
+  // Setup
+  const sim::CombatState initial_state = create_initial_state();
+  sim::CombatState damaged_state = initial_state;
+  damaged_state.monsters.front().current_hp -= 5;
+
+  // Action
+  const int score_a = score_state(initial_state);
+  const int score_b = score_state(damaged_state);
+
+  // Verification
+  EXPECT_GT(score_b, score_a);
+
+}
+
 TEST(BuildGameTreeTest, SingleDefendAction) {
   // Setup
   sim::CombatState initial_state = create_initial_state();

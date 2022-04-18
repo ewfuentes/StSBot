@@ -10,10 +10,13 @@
 namespace sts::sim {
 
 struct CombatState;
+struct Card;
 enum class CardLocation { HAND, DRAW, DISCARD, EXHAUST };
 
 struct Action {
   std::string descriptor;
+  std::shared_ptr<const Card> maybe_card;
+  std::optional<int> maybe_target;
   std::function<CombatState(const CombatState &)> apply;
 };
 
@@ -31,7 +34,7 @@ struct MonsterState {
   int current_block;
 };
 
-  struct Card : public std::enable_shared_from_this<Card> {
+struct Card : public std::enable_shared_from_this<Card> {
   enum class Type { ATTACK, SKILL, POWER, CURSE };
   std::string name;
   int cost;
@@ -41,9 +44,7 @@ struct MonsterState {
   Card(std::string name, int cost, int id, Type type)
       : name(std::move(name)), cost(cost), id(id), type(type) {}
   Card(const Card &other) = default;
-  virtual std::vector<Action> create_actions(const CombatState &) const {
-    return {};
-  };
+  virtual std::vector<Action> create_actions(const CombatState &) const { return {}; };
   virtual ~Card() {}
   bool operator<(const Card &other) const { return id < other.id; }
 };

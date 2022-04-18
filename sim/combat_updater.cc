@@ -12,7 +12,7 @@ CombatUpdater &CombatUpdater::damage_monster(const int amount,
   auto &monster = state_.monsters.at(target);
   const int excess_damage = std::max(0, amount - monster.current_block);
   monster.current_block = std::max(0, monster.current_block - amount);
-  monster.current_hp -= excess_damage;
+  monster.current_hp -= std::min(excess_damage, monster.current_hp);
   return *this;
 }
 

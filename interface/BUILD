@@ -26,6 +26,7 @@ cc_binary(
 cc_library(
   name = "game_state",
   hdrs = ["game_state.hh"],
+  visibility = ["//planning:__subpackages__"],
 )
 
 cc_library(
@@ -53,5 +54,6 @@ cc_library(
   srcs = ["generate_command.cc"],
   deps = [
     ":game_state",
+    "//planning:generate_combat_command",
   ]
 )
