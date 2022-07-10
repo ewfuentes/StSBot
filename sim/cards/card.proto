@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+import "sim/cards/effect.proto";
+
+package sim.cards;
+
+message Card {
+  string name = 1;
+  int32 upgrade_level = 2;
+  repeated sim.cards.Effect effects = 3;
+}
