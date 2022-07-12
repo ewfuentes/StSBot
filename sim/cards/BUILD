@@ -1,6 +1,6 @@
 
 package(default_visibility=["//planning:__subpackages__"])
-load("@rules_cc//cc:defs.bzl", "cc_library", "cc_proto_library")
+load("@//build:proto.bzl", "multi_proto_library")
 
 cc_library(
   name = "get_unique_id",
@@ -56,23 +56,13 @@ cc_library(
   ],
 )
 
-proto_library(
+multi_proto_library(
     name = "card_proto",
-    srcs = ["card.proto"],
-    deps = [":effect_proto"],
+    srcs = ["card.proto",],
+    deps = [":effect_proto",],
 )
 
-proto_library(
+multi_proto_library(
     name = "effect_proto",
-    srcs = ["effect.proto"],
-)
-
-cc_proto_library(
-    name = "effect_cc_proto",
-    deps = [":effect_proto"],
-)
-
-cc_proto_library(
-    name = "card_cc_proto",
-    deps = [":card_proto"],
+    srcs = ["effect.proto",],
 )

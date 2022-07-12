@@ -22,6 +22,17 @@ rules_cc_dependencies()
 rules_cc_toolchains()
 
 http_archive(
+    name = "rules_python",
+    sha256 = "56dc7569e5dd149e576941bdb67a57e19cd2a7a63cc352b62ac047732008d7e1",
+    strip_prefix = "rules_python-0.10.0",
+    url = "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.10.0.tar.gz",
+)
+
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+python_register_toolchains(name="python3_10", python_version="3.10.4")
+
+
+http_archive(
     name = "rules_proto",
     sha256 = "e017528fd1c91c5a33f15493e3a398181a9e821a804eb7ff5acdd1d2d6c2b18d",
     strip_prefix = "rules_proto-4.0.0-3.20.0",
