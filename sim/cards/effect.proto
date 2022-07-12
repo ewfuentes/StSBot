@@ -8,7 +8,8 @@ message TargetType {
         INVALID = 0;
         CHOSEN = 1;
         RANDOM = 2;
-        ALL = 3;
+        PLAYER = 3;
+        ALL = 4;
     }
 }
 
@@ -27,7 +28,7 @@ message Effect {
     EnergyAdjust energy_adjust = 1;
     ApplyBlock apply_block = 2;
     ApplyDamage apply_damage = 3;
-    ApplyStatus apply_state = 4;
+    ApplyStatus apply_status = 4;
   }
 }
 
@@ -41,10 +42,12 @@ message ApplyBlock {
 
 message ApplyDamage {
   int32 value = 1;
-  TargetType target = 2;
+  int32 times = 2;
+  TargetType.Value target = 3;
 }
 
 message ApplyStatus {
   int32 value = 1;
-  StatusType status = 2;
+  StatusType.Value status = 2;
+  TargetType.Value target = 3;
 }

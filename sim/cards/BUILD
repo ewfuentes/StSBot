@@ -1,6 +1,13 @@
 
 package(default_visibility=["//planning:__subpackages__"])
+load("@pip_deps//:requirements.bzl", "requirement")
 load("@//build:proto.bzl", "multi_proto_library")
+load("@//build:py.bzl", "py_test")
+
+filegroup(
+  name = "cards_pbtxt",
+  srcs = ["ironclad.pbtxt"],
+)
 
 cc_library(
   name = "get_unique_id",
@@ -65,4 +72,15 @@ multi_proto_library(
 multi_proto_library(
     name = "effect_proto",
     srcs = ["effect.proto",],
+)
+
+py_test(
+    name = "cards_proto_test",
+    srcs = ["cards_proto_test.py"],
+    data = [":cards_pbtxt"],
+    deps = [
+      ":card_proto_py",
+      ":effect_proto_py",
+      requirement("protobuf"),
+    ]
 )
