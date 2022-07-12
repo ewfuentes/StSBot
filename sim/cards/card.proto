@@ -10,3 +10,7 @@ message Card {
   int32 upgrade_level = 2;
   repeated sim.cards.Effect effects = 3;
 }
+
+message Cards {
+  repeated Card card = 1;
+}

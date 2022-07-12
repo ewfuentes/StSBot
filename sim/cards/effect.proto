@@ -3,6 +3,48 @@ syntax = "proto3";
 
 package sim.cards;
 
-message Effect {
+message TargetType {
+    enum Value {
+        INVALID = 0;
+        CHOSEN = 1;
+        RANDOM = 2;
+        ALL = 3;
+    }
+}
 
+message StatusType {
+    enum Value {
+        INVALID = 0;
+        ALL = 1;
+        WEAK = 2;
+        FRAIL = 3;
+        VULNERABLE = 4;
+    }
+}
+
+message Effect {
+  oneof effect_oneof {
+    EnergyAdjust energy_adjust = 1;
+    ApplyBlock apply_block = 2;
+    ApplyDamage apply_damage = 3;
+    ApplyStatus apply_state = 4;
+  }
+}
+
+message EnergyAdjust {
+  int32 value = 1;
+}
+
+message ApplyBlock {
+  int32 value = 1;
+}
+
+message ApplyDamage {
+  int32 value = 1;
+  TargetType target = 2;
+}
+
+message ApplyStatus {
+  int32 value = 1;
+  StatusType status = 2;
 }

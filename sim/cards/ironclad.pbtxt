@@ -1,0 +1,45 @@
+
+Cards {
+  card {
+    name: "Strike"
+    upgrade_level: 0
+    effects {
+      energy_adjust {
+        value: -1
+      }
+      apply_damage {
+        value: 6
+        target: CHOSEN
+      }
+    }
+  }
+
+  card {
+    name: "Defend"
+    upgrade_level: 0
+    effects {
+      energy_adjust {
+        value: -1
+      }
+      apply_block {
+        value: 5
+      }
+    }
+  }
+
+  card {
+    name: "Bash"
+    upgrade_level: 0
+    effects {
+      energy_adjust {
+        value: -2
+      }
+      apply_damage {
+        value: 5
+      }
+      apply_status {
+        value: VULNERABLE
+      }
+    }
+  }
+}
