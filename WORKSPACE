@@ -1,6 +1,16 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
+  name = "com_google_protobuf",
+  urls = ["https://github.com/protocolbuffers/protobuf/archive/refs/tags/v21.2.zip"],
+  strip_prefix = "protobuf-21.2",
+  sha256 = "3307728c339867a7b31f8b4d80501225853b364ce57f35dc2b5d154033ecbe53",
+  patch_args = ["-p1", "-s"],
+  patches = ["//third_party:protobuf.patch"],
+)
+
+
+http_archive(
     name = "bazel_skylib",
     urls = [
         "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
@@ -47,6 +57,7 @@ http_archive(
 load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
 rules_proto_dependencies()
 rules_proto_toolchains()
+
 
 http_archive(
   name = "com_google_googletest",

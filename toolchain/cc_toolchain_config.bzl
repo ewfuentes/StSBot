@@ -62,19 +62,33 @@ def _impl(ctx):
         ],
       ),
       feature(
-          name="default_compile_flags",
+          name="warning_compile_flags",
           enabled=True,
           flag_sets = [
             flag_set(
               actions = all_compile_actions,
               flag_groups = [
                 flag_group(
-                  flags=["-std=c++20", "-Wall", "-Wextra", "-Wpedantic", "-Werror"]
+                  flags=["-Wall", "-Wextra", "-Wpedantic", "-Werror"]
                 )
               ]
             )
           ]
-      )
+      ),
+      feature(
+          name="cpp_compile_flags",
+          enabled=True,
+          flag_sets = [
+            flag_set(
+              actions = [ACTION_NAMES.cpp_compile],
+              flag_groups = [
+                flag_group(
+                  flags=["-std=c++20"]
+                )
+              ]
+            )
+          ]
+      ),
     ]
 
     return cc_common.create_cc_toolchain_config_info(
