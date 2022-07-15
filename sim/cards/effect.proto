@@ -1,7 +1,7 @@
 
 syntax = "proto3";
 
-package sim.cards;
+package sts.sim.cards.proto;
 
 message TargetType {
     enum Value {
@@ -9,7 +9,7 @@ message TargetType {
         CHOSEN = 1;
         RANDOM = 2;
         PLAYER = 3;
-        ALL = 4;
+        ALL_MONSTER = 4;
     }
 }
 
@@ -43,7 +43,8 @@ message ApplyBlock {
 message ApplyDamage {
   int32 value = 1;
   int32 times = 2;
-  TargetType.Value target = 3;
+  bool ignores_block = 3;
+  TargetType.Value target = 4;
 }
 
 message ApplyStatus {

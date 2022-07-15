@@ -1,5 +1,5 @@
 
-package(default_visibility=["//planning:__subpackages__"])
+package(default_visibility=["//planning:__subpackages__", "//sim:__subpackages__"])
 load("@pip_deps//:requirements.bzl", "requirement")
 load("@//build:proto.bzl", "multi_proto_library")
 load("@//build:py.bzl", "py_test")

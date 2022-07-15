@@ -9,11 +9,18 @@ cc_library(
 )
 
 cc_library(
+  name = "target",
+  hdrs = ["target.hh"],
+)
+
+cc_library(
   name = "combat_updater",
   hdrs = ["combat_updater.hh"],
   srcs = ["combat_updater.cc"],
   deps = [
     ":combat",
+    ":target",
+    "//sim/cards:card_proto",
   ]
 )
 
