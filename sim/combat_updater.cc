@@ -43,7 +43,7 @@ CombatState apply_effect(CombatState in, const cards::proto::ApplyDamage &effect
 
       // Reduce the block by the blocked damage and reduce the health by the unblocked damage
       actor.current_block -= blocked_damage;
-      actor.current_hp -= unblocked_damage;
+      actor.current_hp -= std::min(unblocked_damage, actor.current_hp);
     }
   };
 

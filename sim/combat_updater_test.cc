@@ -80,4 +80,40 @@ TEST(CombatUpdaterTest, DamageMonsterTest) {
   }
 }
 
+TEST(CombatUpdaterTest, IgnoreBlockDamageMonsterTest) {
+  // Setup
+  constexpr int DAMAGE_AMOUNT_1 = 5;
+  constexpr int DAMAGE_AMOUNT_2 = 3;
+  constexpr int DAMAGE_AMOUNT_3 = 12;
+  constexpr int DAMAGE_AMOUNT_4 = 20;
+  const CombatState state = create_dummy_combat_state();
+
+  // Action
+  CombatState new_state = state;
+  for (auto &[target, amount] :
+       std::vector<std::pair<Target, int>>{std::make_pair(TargetMonster{0}, DAMAGE_AMOUNT_1),
+                                           std::make_pair(TargetMonster{1}, DAMAGE_AMOUNT_2),
+                                           std::make_pair(TargetMonster{2}, DAMAGE_AMOUNT_3),
+                                           std::make_pair(TargetPlayer{}, DAMAGE_AMOUNT_4)}) {
+    cards::proto::ApplyDamage effect;
+    effect.set_value(amount);
+    effect.set_ignores_block(true);
+    new_state = detail::apply_effect(std::move(new_state), effect, target);
+  }
+
+  // Verification
+  // Check the monsters
+  const std::array<std::tuple<int, int>, 3> expected_monster_hp_and_block{{{5, 0}, {2, 10}, {0, 10}}};
+  for (size_t i = 0; i < new_state.monsters.size(); i++) {
+    const auto &monster = new_state.monsters.at(i);
+    const auto &[expected_hp, expected_block] = expected_monster_hp_and_block.at(i);
+
+    EXPECT_EQ(monster.current_hp, expected_hp);
+    EXPECT_EQ(monster.current_block, expected_block);
+  }
+
+  // Check the player
+  EXPECT_EQ(new_state.player.current_hp, state.player.current_hp - DAMAGE_AMOUNT_4);
+  EXPECT_EQ(new_state.player.current_block, state.player.current_block);
+}
 }  // namespace sts::sim
