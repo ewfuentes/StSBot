@@ -1,16 +1,26 @@
 
 package(default_visibility=["//sim:__subpackages__"])
 
+
 cc_library(
   name = "combat",
   visibility = ["//visibility:public"],
   hdrs = ["combat.hh"],
   srcs = ["combat.cc"],
+  deps = [
+    ":status",
+  ]
 )
 
 cc_library(
   name = "target",
   hdrs = ["target.hh"],
+)
+
+cc_library(
+  name = "status",
+  hdrs = ["status.hh"],
+  deps = ["//sim/cards:effect_proto",]
 )
 
 cc_library(

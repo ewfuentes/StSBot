@@ -56,7 +56,30 @@ CombatState apply_effect(CombatState in, const cards::proto::ApplyDamage &effect
   return in;
 }
 
-CombatState apply_effect(CombatState in, const cards::proto::ApplyStatus &, const Target &) {
+CombatState apply_effect(CombatState in, const cards::proto::ApplyStatus &effect,
+                         const Target &target) {
+  // update the relevant status item
+  auto apply_status = [&](std::vector<Status> &status_list) {
+    auto status_it = std::find_if(status_list.begin(), status_list.end(),
+                                  [&](const auto &s) { return s.type == effect.status(); });
+    if (status_it != status_list.end()) {
+      // We found a matching instance
+      status_it->value += effect.value();
+    } else {
+      // We didn't find a matching instance
+      status_list.emplace_back(Status{.type = effect.status(), .value = effect.value()});
+    }
+  };
+
+  // Get the relevant status list
+  std::visit(
+      overloaded{
+          [&](TargetPlayer &&) -> void { apply_status(in.player.status); },
+          [&](TargetMonster &&target) -> void { apply_status(in.monsters.at(target.idx).status); },
+          [&](auto &&) -> void {},
+      },
+      Target(target));
+
   return in;
 }
 

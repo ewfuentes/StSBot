@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "sim/status.hh"
+
 
 namespace sts::sim {
 
@@ -27,6 +29,7 @@ struct PlayerState {
   int current_hp;
   int current_block;
   int current_energy;
+  std::vector<Status> status;
 };
 
 struct MonsterState {
@@ -34,6 +37,7 @@ struct MonsterState {
   int max_hp;
   int current_hp;
   int current_block;
+  std::vector<Status> status;
 };
 
 struct Card : public std::enable_shared_from_this<Card> {

@@ -16,10 +16,10 @@ message TargetType {
 message StatusType {
     enum Value {
         INVALID = 0;
-        ALL = 1;
-        WEAK = 2;
-        FRAIL = 3;
-        VULNERABLE = 4;
+        WEAK = 1;
+        FRAIL = 2;
+        VULNERABLE = 3;
+        STRENGTH = 4;
     }
 }
 

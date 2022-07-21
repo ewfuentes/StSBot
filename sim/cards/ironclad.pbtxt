@@ -45,7 +45,7 @@ card {
   effects: {
     apply_status {
       status: VULNERABLE
-      value: 3
+      value: 2
       target: CHOSEN
     }
   }
